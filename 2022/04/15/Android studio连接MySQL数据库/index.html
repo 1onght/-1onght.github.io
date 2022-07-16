@@ -1,0 +1,649 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://w.wallhaven.cc/full/57/wallhaven-579267.jpg">
+  <link rel="icon" href="https://w.wallhaven.cc/full/57/wallhaven-579267.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="1onght">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言 小组做软件工程的大作业，其中遇到的一道问题–Android studio 连接MySQL数据库。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android studio连接MySQL数据库">
+<meta property="og:url" content="http://example.com/2022/04/15/Android%20studio%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">
+<meta property="og:site_name" content="1onght&#39;s Blog">
+<meta property="og:description" content="前言 小组做软件工程的大作业，其中遇到的一道问题–Android studio 连接MySQL数据库。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-15T14:29:37.000Z">
+<meta property="article:modified_time" content="2022-07-16T12:54:30.990Z">
+<meta property="article:author" content="1onght">
+<meta property="article:tag" content="方法">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Android studio连接MySQL数据库 - 1onght&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"|","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>1onght的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://w.wallhaven.cc/full/y8/wallhaven-y8vlyk.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Android studio连接MySQL数据库</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-15 22:29" pubdate>
+          April 15, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          39 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Android studio连接MySQL数据库</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>小组做软件工程的大作业，其中遇到的一道问题–Android studio 连接MySQL数据库。<span id="more"></span>从网上找了一大堆教程，没起效果，而后b站搜了教程，终于成了，现在记录如下。<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1c64y1c7nH?p=1">链接在这儿~</a></p>
+<h2 id="下载必要的工具等"><a class="markdownIt-Anchor" href="#下载必要的工具等"></a> 下载必要的工具等</h2>
+<p>主要是下载 <strong>mysql-connector-java-5.1.xx-bin.jar</strong>    <s>百度一下就有了</s></p>
+<p>粘贴到该位置</p>
+
+<p>不用改名字/位置，直接点OK</p>
+
+<p>然后，右键文件点Add As Library…</p>
+
+<p>等加载完成第一步就OK了。</p>
+<h2 id="创建文件等"><a class="markdownIt-Anchor" href="#创建文件等"></a> 创建文件等</h2>
+<p>现在就是必要的文件修改或创建。</p>
+<ol>
+<li>
+<p>xxxxxxxxxx7 1#include &lt;bits/stdc++.h&gt;2using namespace std;3​4int main() {5    cout &lt;&lt; “hello world\n”;6    return 0;7}cpp</p>
+</li>
+<li>
+<p><strong>添加以下代码</strong></p>
+
+</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.INTERNET&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+<ol start="3">
+<li><strong>然后在这个位置新建.java文件，我这里按照视频取文件名</strong>
+</li>
+</ol>
+<p><s>话说我之前为什么要打码啊，反正没人看不是</s></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.dempprojecttwo;<br><br><span class="hljs-keyword">import</span> java.sql.Connection;<br><span class="hljs-keyword">import</span> java.sql.DriverManager;<br><span class="hljs-keyword">import</span> java.sql.ResultSet;<br><span class="hljs-keyword">import</span> java.sql.Statement;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MySqlHelp</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getUserSize</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// CLS 的路径是Driver文件的路径，一般都是这个，图片在下面</span><br>        <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">CLS</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span>;<br>        <span class="hljs-comment">// URL的格式写成 jdbc:mysql://你的本机IPV4地址:端口号(应该写3306是可以的，不行就百度)/你的数据库名</span><br>        <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">URL</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;jdbc:mysql://IPV4地址:3306/数据库名(不是表名~)&quot;</span>;<br>        <span class="hljs-comment">// 访问数据库的用户帐号密码，设置图片在下面</span><br>        <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">USER</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;1onght&quot;</span>;<br>        <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">PWD</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;123456&quot;</span>;<br><br>        <span class="hljs-comment">// 下面的代码依照视频写出</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// 用户数量</span><br><br>        <span class="hljs-keyword">try</span> &#123;<br>            Class.forName(CLS);<br>            <span class="hljs-type">Connection</span> <span class="hljs-variable">conn</span> <span class="hljs-operator">=</span> DriverManager.getConnection(URL, USER, PWD);<br>            <span class="hljs-comment">// SQL语句，这里是统计数据库表里有几组数据</span><br>            <span class="hljs-comment">// 依据实际情况改写语句</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">sql</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;select count(1) as s1 from Student&quot;</span>;<br>            <span class="hljs-type">Statement</span> <span class="hljs-variable">stmt</span> <span class="hljs-operator">=</span> conn.createStatement();<br>            <span class="hljs-type">ResultSet</span> <span class="hljs-variable">rs</span> <span class="hljs-operator">=</span> stmt.executeQuery(sql);<br>            <span class="hljs-keyword">while</span>(rs.next()) &#123;<br>                count = rs.getInt(<span class="hljs-string">&quot;s1&quot;</span>);<br>            &#125;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception ex) &#123;<br>            ex.printStackTrace();<br>        &#125;<br>        <span class="hljs-keyword">return</span> count;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>Driver</strong>文件路径，就在下面自己找找</p>
+
+<p><strong>不是这个位置的！！！</strong></p>
+
+<p>创建连接数据库的用户，创建方法可以百度哦</p>
+
+<p>然后在 mysql 内设置</p>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> PRIVILEGES <span class="hljs-keyword">ON</span> <span class="hljs-operator">*</span>.<span class="hljs-operator">*</span> <span class="hljs-keyword">TO</span> <span class="hljs-string">&#x27;用户名&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span> IDENTIFIED <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;密码&#x27;</span> <span class="hljs-keyword">WITH</span> <span class="hljs-keyword">GRANT</span> OPTION;<br></code></pre></td></tr></table></figure>
+<ol start="4">
+<li><strong>最后编辑 MainActivity.java文件和使用的 .xml文件，代码如下</strong></li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">LinearLayout</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:orientation</span>=<span class="hljs-string">&quot;vertical&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:padding</span>=<span class="hljs-string">&quot;10dp&quot;</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">TextView</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/fun_1&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;wrap_content&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:text</span>=<span class="hljs-string">&quot;安卓直接访问mysql数据库&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:textSize</span>=<span class="hljs-string">&quot;30sp&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:gravity</span>=<span class="hljs-string">&quot;center&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:layout_margin</span>=<span class="hljs-string">&quot;10dp&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:textColor</span>=<span class="hljs-string">&quot;@color/black&quot;</span> /&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">Button</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/btn_query_count&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;wrap_content&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:text</span>=<span class="hljs-string">&quot;查询用户数量&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:backgroundTint</span>=<span class="hljs-string">&quot;#FFFFFF&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:textSize</span>=<span class="hljs-string">&quot;30sp&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:gravity</span>=<span class="hljs-string">&quot;center&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:textColor</span>=<span class="hljs-string">&quot;#1096dc&quot;</span>/&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">TextView</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/tv_query_count&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;wrap_content&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;wrap_content&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:text</span>=<span class="hljs-string">&quot;用户数量为: &quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:textSize</span>=<span class="hljs-string">&quot;30sp&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:gravity</span>=<span class="hljs-string">&quot;center&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:textColor</span>=<span class="hljs-string">&quot;@color/black&quot;</span>/&gt;</span><br><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">LinearLayout</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.dempprojecttwo;<br><br><span class="hljs-keyword">import</span> androidx.annotation.NonNull;<br><span class="hljs-keyword">import</span> androidx.appcompat.app.AppCompatActivity;<br><br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> android.os.Handler;<br><span class="hljs-keyword">import</span> android.os.Message;<br><span class="hljs-keyword">import</span> android.view.View;<br><span class="hljs-keyword">import</span> android.view.WindowManager;<br><span class="hljs-keyword">import</span> android.widget.Button;<br><span class="hljs-keyword">import</span> android.widget.TextView;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AppCompatActivity</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">View</span>.OnClickListener&#123;<br><br>    <span class="hljs-keyword">private</span> Button btn_query_count;<br>    <span class="hljs-keyword">private</span> TextView tv_user_count;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Handler</span> <span class="hljs-variable">handler</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Handler</span>() &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleMessage</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> Message msg)</span> &#123;<br><span class="hljs-comment">//            super.handleMessage(msg);</span><br>            <span class="hljs-keyword">if</span>(msg.what == <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> (Integer)msg.obj;<br>                tv_user_count.setText(<span class="hljs-string">&quot;数据库内用户数量为：&quot;</span>+count);<br>            &#125;<br>        &#125;<br>    &#125;;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> &#123;<br>        <span class="hljs-comment">//去掉顶部标题</span><br>        getSupportActionBar().hide();<br><span class="hljs-comment">//去掉最上面时间、电量等</span><br>        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN<br>                , WindowManager.LayoutParams.FLAG_FULLSCREEN);<br>        <span class="hljs-built_in">super</span>.onCreate(savedInstanceState);<br>        setContentView(R.layout.activity_main);<br><br>        initView();<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initView</span><span class="hljs-params">()</span> &#123;<br>        btn_query_count = findViewById(R.id.btn_query_count);<br>        tv_user_count = findViewById(R.id.tv_query_count);<br><br>        btn_query_count.setOnClickListener(<span class="hljs-built_in">this</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onClick</span><span class="hljs-params">(View v)</span> &#123;<br>        <span class="hljs-keyword">switch</span> (v.getId()) &#123;<br>            <span class="hljs-keyword">case</span> R.id.btn_query_count:<br>                doQueryCount();<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doQueryCount</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Runnable</span>() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;<br>                <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> MySqlHelp.getUserSize();<br>                <span class="hljs-type">Message</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> Message.obtain();<br>                msg.what = <span class="hljs-number">0</span>;<br>                msg.obj = count;<br><br>                handler.sendMessage(msg);<br>            &#125;<br>        &#125;).start();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>数据库内容</p>
+
+<p>具体演示</p>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%96%B9%E6%B3%95/">#方法</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Android studio连接MySQL数据库</div>
+      <div>http://example.com/2022/04/15/Android studio连接MySQL数据库/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>1onght</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 15, 2022</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/25/2022%E5%A4%A9%E6%A2%AF%E6%80%BB%E5%86%B3%E8%B5%9B%E9%A2%98%E8%A7%A3/" title="2022天梯总决赛题解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2022天梯总决赛题解</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/03/2022%E5%B9%B4%E4%B8%8A%E6%B5%B7%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E6%A0%A1%E8%B5%9B%E5%90%8C%E6%AD%A5%E8%B5%9B%E4%B8%AA%E4%BA%BA%E9%A2%98%E8%A7%A3/" title="2022年上海理工大学校赛同步赛个人题解">
+                        <span class="hidden-mobile">2022年上海理工大学校赛同步赛个人题解</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       本博客基于<a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>搭建 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/css/fold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
